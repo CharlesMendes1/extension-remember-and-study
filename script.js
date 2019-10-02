@@ -2,13 +2,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
     chrome.tabs.getSelected(null,function(tab) {
         var tablink = tab.url;
+        let isSite = false;
 
         // verifica se o usuario esta no youtube
         if(tablink.indexOf("https://www.youtube.com/watch?") != -1 ){
 
-            //pegando o video_id da url 
+            //get video_id of the url 
             var video_id = tablink.split('v=')[1];
 
+            //filtro para pegar apenas o id do video
             var ampersandPosition = video_id.indexOf('&');
             if(ampersandPosition != -1) {
                 video_id = video_id.substring(0, ampersandPosition);
@@ -19,12 +21,33 @@ document.addEventListener('DOMContentLoaded', function(){
                 let iFrameYoutube = document.getElementById('iFrameYoutube');
                 iFrameYoutube.setAttribute("src", "https://www.youtube.com/embed/"+ video_id );
                 iFrameYoutube.removeAttribute("hidden");
+                document.getElementById('definition-way').innerText = 'vídeo';
+                document.getElementById('definition_btn_save').innerText = 'vídeo';
+            }else{
+                isSite = true;
             }
     
+        }else{
+            isSite = true;
+        }
+
+        //verify is a site
+        if(isSite){
+            document.getElementById('definition-way').innerText = 'site';
+            document.getElementById('definition_btn_save').innerText = 'site';
+            
+            //add icon in site
+            let iconSite = document.getElementById('icon-website');
+            iconSite.setAttribute("src", tab.favIconUrl );
+            iconSite.removeAttribute("hidden");
+
+            let inputURL = document.getElementById('url-site');
+            inputURL.value = tablink; //adicionando a url em um campo input
+            inputURL.disabled = true;
+            inputURL.removeAttribute("hidden");
         }
 
     });
-
 
 
     document.getElementById('btn_save_option').onclick = function(){ CadastrarLembrete()};

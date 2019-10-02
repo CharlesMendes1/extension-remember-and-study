@@ -1,23 +1,45 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8"/>
-    <title>Lembre e Estude</title>
-    <script src="script.js"></script>
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js" ></script>
-  </head>
-  <body>
-     <!-- 200px por 300px -->
-    <p>Este vídeo será guardado, futuramente iremos avisar para que ele seja revisado</p>
-    <!-- Video sendo demonstrado -->
-    <iframe id="iFrameYoutube" hidden width="560" height="315" src="#" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-    <!-- alert url be existe in system -->
-    <div id="alert_register_exist" class=" d-none alert alert-danger " role="alert">
-      Registro já existe na extensão, caso queira apaguar o lembrete vá ate a aréa dos históricos
-    </div>
-    <button id="btn_save_option" style="color: darkkhaki">Guardar vídeo</button>
-    <button id="btn_history" style="color: darkkhaki" >Historico</button>
-  </body>
+<html lang="pt">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Lembre e Estude</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<script src="script.js"></script>
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<!-- <script src="js/bootstrap.min.js" ></script> -->
+	</head>
+	<body>
+		<div class="container">
+			<!-- 200px por 300px -->
+			<h4>Este <span id="definition-way">???</span> será guardado, futuramente iremos te avisar para que ele seja revisado</h4>
+
+			<!-- Video sendo demonstrado -->
+			<iframe id="iFrameYoutube" hidden width="400" height="300" src="#" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+			</iframe>
+
+			<!-- icon quando não tem miniatura do site -->
+			<img id="icon-website" hidden style="width: 400px; height: 300px" src="#" alt="icon the website">
+
+			<!-- Site sendo demonstrado -->
+			<div class="form-group">
+				<input class="form-control" hidden id="url-site" type="text" value="">
+			</div>
+			
+
+			<!-- alert url be existe in system -->
+			<div id="alert_register_exist" class=" d-none alert alert-danger " role="alert">
+				Registro já existe na extensão, caso queira apaguar o lembrete vá ate a aréa dos históricos
+			</div>
+			
+			<div class="row text-center pb-4">
+				<div class="col-6 ">
+					<button id="btn_save_option" style="color: darkkhaki">Guardar <span id="definition_btn_save">???</span></button>
+				</div>
+				<div class="col-6">
+					<button id="btn_history" style="color: darkkhaki">Historico</button>
+				</div>
+			</div>
+			
+		</div>
+	</body>
 </html>
