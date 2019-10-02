@@ -1,7 +1,7 @@
 {
-    "name": "Lembre e Estude",
+    "name": "Remember and Study",
     "version": "1.0",
-    "description": "Extensão para ajudar a lembrar de videos que foram estudados no youtube, ela ira avisar por meio de notificação quais são os videos que o usúario tem que rever.",
+    "description": "Extension to help you remember videos that were studied on youtube, it will notify you by notification which videos the user has to review.",
     "permissions": [ "tabs","storage"],
     "browser_action": {
         "default_popup": "index.html"
