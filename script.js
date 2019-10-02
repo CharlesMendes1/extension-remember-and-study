@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
     
                 //salvar alterações
                 chrome.storage.sync.set({ListRemember: list}, function() {
-                    alert('Alterações foram realizadas com sucesso!');
+                    document.getElementById('alert_success_register').classList.remove("d-none");
                 });
 
             }else{
