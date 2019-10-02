@@ -38,20 +38,14 @@ document.addEventListener('DOMContentLoaded', function(){
     // 
     // detele
 
-    function verifyRegister(){
-        //verificar se url já esta cadastrada 
-        //verificar prazo de expiração
-            //caso tiver dentro do prazo bloquear cadastro 
-            //caso estiver fora do prazo deixar realizar o cadastro
-    }
 
     async function CadastrarLembrete(){
         // get var itemListRemember
-
         chrome.storage.sync.get(['ListRemember'], async function( result) {
 
             let  list = [];
             let objectList = {};
+            let urlRegisteredExpired = true;
 
             try{
                 //convert string JSON for array
@@ -59,39 +53,63 @@ document.addEventListener('DOMContentLoaded', function(){
             }catch(e){
                 arrayList = [];
             }
-            
+
+            //verify var list 
             if(typeof arrayList != 'undefined' && arrayList != [] ){
                 list = arrayList;
 
-                //verify is not array
-                if( !Array.isArray(list) ){
+                //verify var list is not array
+                if( Array.isArray(list) ){
+                    //verify if new register exist in list save in system and if existe verify date_expired 
+                    //if date_expired invalid is create new register in system
+                    let registerNewUrl = '';
+            
+                    //get new url 
+                    registerNewUrl = await getURL();
+
+                    list.forEach(function(register){
+
+                        //verify register equals 
+                        if( typeof register.url != 'undefined' &&  typeof registerNewUrl != 'undefined' &&  register.url == registerNewUrl){
+
+                            //verify date expired in register
+                            if( typeof register.date_expired != 'undefined' && new Date( register.date_expired ) >= new Date() ){
+                                urlRegisteredExpired = false;
+                            }
+                            
+                        }
+                    },urlRegisteredExpired);
+
+
+                }else{
                     list = [];
                 }
 
-                objectList = await criarLembrete();
-
-                //adicionar dentro do array
-                list.push(objectList);
-
             }else{
-                //creat array global
-                list = [];
-
-                objectList = await criarLembrete();
-
-                //adicionar dentro do array
-                list.push(objectList);
-
+                list = []; //creat array global
             }
 
-            //convertendo array for JSON
-            list = JSON.stringify(list);
 
-            //salvar alterações
-            chrome.storage.sync.set({ListRemember: list}, function() {
-                alert('Alterações foram realizadas com sucesso!');
-                console.log(list);
-            });
+            if(urlRegisteredExpired){
+                objectList = await criarLembrete();
+
+                //adicionar dentro do array
+                list.push(objectList);
+    
+    
+                //convertendo array for JSON
+                list = JSON.stringify(list);
+    
+                //salvar alterações
+                chrome.storage.sync.set({ListRemember: list}, function() {
+                    alert('Alterações foram realizadas com sucesso!');
+                });
+
+            }else{
+                //return mensagem if url be save in system
+                document.getElementById('alert_register_exist').classList.remove("d-none");
+            }
+
 
         });
         
