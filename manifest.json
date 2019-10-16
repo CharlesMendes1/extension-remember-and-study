@@ -4,7 +4,7 @@
     "description": "Extension to help you remember videos that were studied on youtube, it will notify you by notification which videos the user has to review.",
     "permissions": [ "tabs","storage"],
     "browser_action": {
-        "default_popup": "index.html"
+        "default_popup": "src/index.html"
     },
     "manifest_version": 2
 }

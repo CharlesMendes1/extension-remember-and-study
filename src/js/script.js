@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('btn_save_option').onclick = function(){ CadastrarLembrete()};
 
 
-    document.getElementById('btn_history').onclick = function(){ window.location.href = '/history.html'; };
+    document.getElementById('btn_history').onclick = function(){ window.location.href = 'history.html'; };
 
     // CRUD in save information
     // create
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             let  list = [];
             let objectList = {};
-            let urlRegisteredExpired = true;
+            let registrationAccepted = true;
 
             try{
                 //convert string JSON for array
@@ -97,11 +97,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
                             //verify date expired in register
                             if( typeof register.date_expired != 'undefined' && new Date( register.date_expired ) >= new Date() ){
-                                urlRegisteredExpired = false;
+                                registrationAccepted = false;
                             }
                             
                         }
-                    },urlRegisteredExpired);
+                    },registrationAccepted);
 
 
                 }else{
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }
 
 
-            if(urlRegisteredExpired){
+            if(registrationAccepted){
                 objectList = await criarLembrete();
 
                 //adicionar dentro do array
@@ -139,29 +139,39 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     async function criarLembrete(){
-        let varURL = '';
-        let varDateAt = '';
-        let expiredTime = '';
+        // let varURL = '';
+        // let varDateAt = '';
+        // let expiredTime = '';
+
         let objectList = {};
 
         //get url 
-        varURL = await getURL();
+        let varURL = await getURL();
 
         // get date_at && hour_at 
-        varDateAt = getDate();
+        let varDateAt = getDate();
 
-        expiredTime = getDateExpired(varDateAt);
+        let expiredTime = getDateExpired(varDateAt);
 
-        objectList = createObjectList(varURL, varDateAt, expiredTime);
+        let varIcon = await getIcon();
+
+        let varTitle = await getTitle();
+
+        objectList = createObjectList(varURL, varDateAt, expiredTime, varIcon, varTitle);
+
+        console.log(objectList);
+        return false;
 
         return objectList;
     }
 
-    function createObjectList(varURL, varDateAt, expiredTime){
+    function createObjectList(varURL, varDateAt, expiredTime, varIcon, varTitle){
         let objectList = {
             url: varURL,
             date_at: varDateAt,
-            date_expired: expiredTime
+            date_expired: expiredTime,
+            icon: varIcon,
+            title: varTitle
         }
         return objectList;
     }
@@ -185,6 +195,63 @@ document.addEventListener('DOMContentLoaded', function(){
             console.log(menssage);
         });
     }
+
+    async function getIcon(){
+        //get url in video
+        return varURL = await new Promise((resolve, reject) => {
+            chrome.tabs.getSelected(null,function(tab) {
+                if(typeof tab != 'undefined'){
+
+                    //verificar se é youtube ou site
+                    let result = null;
+                    let tablink = tab.url;
+                    //verificando se usuario esta assistindo youtube
+                    if(tablink.indexOf("https://www.youtube.com/watch?") != -1 ){
+                        result = tab.url;
+                    }else{
+                        //constatando que usuario esta em um site
+
+                        //verificar se no site existe favIcon
+                        if(typeof tab.favIconUrl != 'undefined'){
+                            result = tab.favIconUrl;
+                        }else{
+                            //vamos ter que ter uma imagem default para sites que não possuim icon 
+                            result = "default";
+                        }
+                    }
+
+                    resolve(result);
+                }else{
+                    reject('Faild not url found');
+                }
+                
+            });
+        }).then( async (result) => { 
+            return result;
+        }).catch( (menssage) => {
+            console.log(menssage);
+        });
+    }
+
+    async function getTitle(){
+        //get url in video
+        return varURL = await new Promise((resolve, reject) => {
+            chrome.tabs.getSelected(null,function(tab) {
+                if(typeof tab != 'undefined'){
+                    resolve(tab.title);
+                }else{
+                    reject('Faild not url found');
+                }
+                
+            });
+        }).then( async (result) => { 
+            return result;
+        }).catch( (menssage) => {
+            console.log(menssage);
+        });
+    }
+
+
 
     function getDate(){
         return new Date().getTime();
