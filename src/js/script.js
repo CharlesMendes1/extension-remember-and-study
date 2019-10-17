@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', function(){
             }catch(e){
                 arrayList = [];
             }
+            console.log("------ARRAY-------");
+            console.log(arrayList);
 
             //verify var list 
             if(typeof arrayList != 'undefined' && arrayList != [] ){
@@ -85,10 +87,13 @@ document.addEventListener('DOMContentLoaded', function(){
                 if( Array.isArray(list) ){
                     //verify if new register exist in list save in system and if existe verify date_expired 
                     //if date_expired invalid is create new register in system
-                    let registerNewUrl = '';
-            
+                    
                     //get new url 
+                    let registerNewUrl = '';
                     registerNewUrl = await getURL();
+
+                    console.log("------GET URL-------");
+                    console.log(registerNewUrl);
 
                     list.forEach(function(register){
 
@@ -115,6 +120,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
             if(registrationAccepted){
                 objectList = await criarLembrete();
+
+                console.log("------OBJECT CREATE-------");
+                console.log(objectList);
 
                 //adicionar dentro do array
                 list.push(objectList);
@@ -158,9 +166,6 @@ document.addEventListener('DOMContentLoaded', function(){
         let varTitle = await getTitle();
 
         objectList = createObjectList(varURL, varDateAt, expiredTime, varIcon, varTitle);
-
-        console.log(objectList);
-        return false;
 
         return objectList;
     }

@@ -74,17 +74,17 @@ document.addEventListener('DOMContentLoaded', function(){
                             //icon site
                             icon = document.createElement("img");
                             icon.setAttribute("id", "icon-website");
-                            icon.setAttribute("width", "250");
+                            // icon.setAttribute("width", "250");
+                            
+                            icon.setAttribute("width", "200");
                             icon.setAttribute("height", "150");
+                            icon.classList.add("offset-1");
     
                             if(typeof register.icon != "undefined"){
                                 icon.setAttribute("src", register.icon);
                             }else{
-                                //TODO:: adicionar imagem default
-
-                                //imagem default 
-                                //colocar caminho da imagem default 
-                                icon.setAttribute("src", '');
+                                //caminho default caso site não tenha icone
+                                icon.setAttribute("src", 'img/favicon.png');
                             }
                             icon.setAttribute("alt", "icon the website");
                         }
@@ -103,10 +103,10 @@ document.addEventListener('DOMContentLoaded', function(){
                         p2.innerText = "titulo da pagina: " + register.title;
     
                         let p3 = document.createElement("p");
-                        p3.innerText = "data do cadastro: "+ register.date_at;
+                        p3.innerText = "data do cadastro: "+ convertTimestamp(register.date_at);
     
                         let p4 = document.createElement("p");
-                        p4.innerText = "data de expiração: "+ register.date_expired;
+                        p4.innerText = "data de expiração: "+ convertTimestamp(register.date_expired);
     
                         //adicionar os p a description
     
@@ -169,6 +169,13 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
     });
+
+    function convertTimestamp(timestamp){
+        let data = new Date(timestamp);
+        let hora = data.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+
+        return data.toLocaleDateString() + " " + hora; 
+    }
 
     function converterURLformatFrameYoutube(url){
         //convertendo url para video_id, para usar thumb iframe
