@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(){
 
+    //TODO:: colocar o botão para excluir videos
+    //TODO:: Colocar botão para voltar extensão 
+
     // get var itemListRemember
     chrome.storage.sync.get(['ListRemember'], async function( result) {
 
@@ -13,8 +16,6 @@ document.addEventListener('DOMContentLoaded', function(){
         }catch(e){
             arrayList = [];
         }
-        console.log('aquiii');
-        console.log(arrayList);
 
         //verify var list 
         if(typeof arrayList != 'undefined' && arrayList != [] ){
@@ -123,8 +124,9 @@ document.addEventListener('DOMContentLoaded', function(){
                         let spaceBtn = document.createElement("div");
                         
                         let btnDelete = document.createElement("button");
-                        btnDelete.setAttribute("id", "btn-delete");
+                        btnDelete.setAttribute("data-id", index);
                         btnDelete.classList.add("btn", "btn-danger");
+                        btnDelete.classList.add("class", "btn-delete");
                         btnDelete.innerText = "Excluir";
 
                         spaceBtn.appendChild(btnDelete);
@@ -169,6 +171,54 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
     });
+
+    document.getElementsByClassName('btn-delete').onclick = function(){ 
+        console.log('teste');
+        // DeletandoLembretes()
+    };
+
+    async function DeletandoLembretes(){
+        console.log('testetsetestse etsetset setestes');
+
+        let id = this.getAttribute('data-id');
+
+        console.log('testetsetestse etsetset setestes');
+        
+        let  list = [];
+
+        try{
+            //convert string JSON for array
+            arrayList = JSON.parse(result.ListRemember); 
+        }catch(e){
+            arrayList = [];
+        }
+
+        //verify var list 
+        if(typeof arrayList != 'undefined' && arrayList != [] ){
+            list = arrayList;
+
+            //verify var list is not array
+            if( Array.isArray(list) ){
+                
+                console.log(list);
+
+                //convertendo array for JSON
+                listFilter = JSON.stringify(listFilter);
+
+                //salvar alterações
+                chrome.storage.sync.set({ListRemember: listFilter}, function() {
+                    //salvo alterações
+                });
+
+            }else{
+                list = [];
+            }
+
+        }else{
+            list = []; //creat array global
+        }
+
+    }
 
     function convertTimestamp(timestamp){
         let data = new Date(timestamp);

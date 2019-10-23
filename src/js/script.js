@@ -52,15 +52,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     document.getElementById('btn_save_option').onclick = function(){ CadastrarLembrete()};
 
-
     document.getElementById('btn_history').onclick = function(){ window.location.href = 'history.html'; };
-
-    // CRUD in save information
-    // create
-    // read 
-    // 
-    // detele
-
 
     async function CadastrarLembrete(){
         // get var itemListRemember
